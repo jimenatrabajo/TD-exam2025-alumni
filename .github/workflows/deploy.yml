@@ -7,7 +7,11 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  
+  GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
+  GKE_ZONE: ${{ secrets.GKE_ZONE }}
+  IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/exam2025
+  GCP_BUCKET_NAME: ${{ secrets.GCP_BUCKET_NAME }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -28,15 +32,18 @@ jobs:
     - name: Build and push Docker image
       run: |
         docker build -t $IMAGE_NAME:$GITHUB_SHA .
-        docker build -t $IMAGE_NAME:lateest .
+        docker build -t $IMAGE_NAME:latest .
         docker push $IMAGE_NAME:$GITHUB_SHA
-        docker push $IMAGE_NAME:lateest
+        docker push $IMAGE_NAME:latest
     - name: Replace bucket name in manifest
       run: |
         sed "s/REPLACE_BUCKET_NAME/${{ secrets.GCP_BUCKET_NAME }}/g" k8s/deployment.yaml > k8s/deployment.generated.yaml
     - name: Deploy to GKE
       run: |
         gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE
+        kubectl apply -f k8s/deployment.generated.yaml
+        kubectl apply -f k8s/service.yaml
     - name: Deploy to App Engine
       run: |
         sed "s/REPLACE_BUCKET_NAME/${{ secrets.GCP_BUCKET_NAME }}/g" app.yaml > app.generated.yaml
+        gcloud app deploy app.generated.yaml --project $PROJECT_ID --quiet

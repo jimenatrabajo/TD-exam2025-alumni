@@ -1,6 +1,6 @@
 resource "google_container_cluster" "primary" {
-  name     = 
-  location = 
+  name     = var.gcp-cluster-name
+  location = var.gcp-zone
 
   remove_default_node_pool = true
   initial_node_count       = 1
@@ -13,11 +13,11 @@ resource "google_container_cluster" "primary" {
 resource "google_container_node_pool" "primary_nodes" {
   name       = "${var.gcp-cluster-name}-node-pool"
   cluster    = google_container_cluster.primary.name
-  location   = 
-  node_count = 
+  location   = var.gcp-zone
+  node_count = var.gcp-node-count
 
   node_config {
-    machine_type = 
+    machine_type = var.gcp-node-size
     disk_size_gb = "20"
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform",
@@ -26,8 +26,8 @@ resource "google_container_node_pool" "primary_nodes" {
 }
 
 resource "google_storage_bucket" "td_bucket" {
-  name     = 
-  location = 
+  name     = var.gcp-bucket-name
+  location = var.gcp-region
   force_destroy = true
 
   uniform_bucket_level_access = true

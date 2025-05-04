@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 
+  name: exam2025-deployment
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: 
+      app: exam2025
   template:
     metadata:
       labels:
-        app: 
+        app: exam2025
     spec:
       containers:
       - name: exam2025
-        image: gcr.io/icai2025/exam2025:latest
-        imagePullPolicy: 
+        image: gcr.io/examen-458207/exam2025:latest
+        imagePullPolicy: Always
         ports:
-        - containerPort: 5001
+        - containerPort: 5000
         env:
           - name: GCP_BUCKET_NAME
             value: "REPLACE_BUCKET_NAME"
         livenessProbe:
-          periodSeconds: 
+          periodSeconds: 2
           httpGet:
             path: /probe
-            port: 
+            port: 5000
 
 

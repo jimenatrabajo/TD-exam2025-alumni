@@ -1,12 +1,12 @@
 
 variable "gcp-project" {
   description = "GCP project"
-  default     = ""
+  default     = "examen-458207"
 }
 
 variable "gcp-network" {
   description = "GCP network"
-  default     = ""
+  default     = "default"
 }
 
 variable "gcp-region" {
@@ -22,21 +22,21 @@ variable "gcp-zone" {
 variable "gcp-cluster-name" {
   description = "Cluster name"
   type        = string
-  default     = ""
+  default     = "jimena-cluster"
 }
 
 variable "gcp-node-count" {
   description = "K8s Worker nodes"
-  type        = 
-  default     = 
+  type        = number
+  default     = 2
 }
 variable "gcp-node-size" {
   description = "K8s Worker nodes"
   type        = string
-  default     = ""
+  default     = "e2-small"
 }
 variable "gcp-bucket-name" {
   description = "Bucket Name"
   type        = string
-  default     = ""
+  default     = "prueba-examen-ra-ro-ra-ro00"
 }
