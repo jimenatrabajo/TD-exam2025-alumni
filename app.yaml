@@ -1,7 +1,7 @@
 runtime: python39
 service: exam2025
 instance_class: F1
-entrypoint: gunicorn -b :$PORT main:apps
+entrypoint: gunicorn -b :$PORT main:app
 env_variables:
   GCP_BUCKET_NAME: "REPLACE_BUCKET_NAME" 
 handlers:
